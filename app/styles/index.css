@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  .flow>*+* {
+    margin-block-start: var(--flow-space, 1em)
+  }
+
+  .wrapper {
+    max-width: 1300px;
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .auto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--auto-grid-min-size, 16rem), 1fr));
+    grid-gap: 1rem;
+  }
+
+  .switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gutter, var(--space-s));
+    align-items: var(--switcher-vertical-alignment, flex-start);
+  }
+
+  .switcher>* {
+    flex-grow: 1;
+    flex-basis: calc((var(--switcher-target-container-width, 40rem) - 100%) * 999);
+  }
+
+  .repel {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: var(--repel-alignment, center);
+    gap: var(--gutter, var(--space-s-m));
+  }
+
+  .repel[data-repel-variant='vertical'] {
+    --repel-alignment: stretch;
+    flex-direction: column;
+  }
+
+  .card-footer {
+    margin-top: auto;
+  }
+
+  .flex-column {
+    flex-direction: column;
+  }
+
+
+  .cart-item img {
+    width: 54px;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  .frntr-input {
+    padding: 5px 20px 15px 20px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    background: #f9f9f9;
+  }
+
+  .frntr-input:focus-within {
+    border: 1px solid #000;
+  }
+
+  .frntr-input span {
+    font-size: 0.8rem;
+    padding-bottom: 5px;
+    font-weight: 600;
+  }
+
+  .frntr-input input {
+    font-size: 1.1rem;
+    outline: none !important;
+  }
+
+  .frntr-input input::placeholder {
+    font-size: 1rem;
+    font-style: italic;
+  }
+
+  /* stripe */
+  .stripe-form {
+    color: #30313d;
+  }
+
+  .stripe-email {
+    border-radius: 6px;
+    padding: 12px;
+    border: 1px solid rgba(50, 50, 93, 0.1);
+    max-height: 44px;
+    font-size: 16px;
+    width: 100%;
+    background: white;
+    box-sizing: border-box;
+  }
+
+  .stripe-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.93rem;
+    transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+  }
+}
