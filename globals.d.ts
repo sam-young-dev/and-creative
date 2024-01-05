@@ -1,6 +1,7 @@
 export {};
 declare global {
   interface ProcessEnv {
+    CRYSTALLIZE_ACCESS_TOKEN_SECRET: any;
     STRIPE_SECRET_PAYMENT_INTENT_WEBHOOK_ENDPOINT_SECRET: string;
     STRIPE_SECRET_KEY: string;
     SUPERFAST_HOST: any;

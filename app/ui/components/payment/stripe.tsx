@@ -24,7 +24,8 @@ export const Stripe: React.FC = () => {
     const stripePromise = loadStripe(variables.PUBLIC_KEY);
 
     // Enable the skeleton loader UI for the optimal loading experience.
-    const loader = 'auto';
+    // const loader = 'auto';
+    const loader = 'always';
 
     useEffect(() => {
         (async () => {
@@ -93,7 +94,7 @@ const StripCheckoutForm: React.FC = () => {
             elements,
             confirmParams: {
                 return_url: 'https://' + window.location.host + '/order/cart/' + cart.cartId,
-                receipt_email: email,
+                receipt_email: email === '' ? customer?.email : email,
             },
             redirect: 'if_required'
         });
@@ -126,7 +127,7 @@ const StripCheckoutForm: React.FC = () => {
             writeStorage('customer', {
                 ...customer,
                 firstname: nameArray[0],
-                lastname: nameArray[fullName.length - 1],
+                lastname: nameArray[1],
                 // address stuff here
             });
         }

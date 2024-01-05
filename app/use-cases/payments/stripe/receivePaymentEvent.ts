@@ -32,20 +32,24 @@ export default async (
             }
             switch (eventName) {
                 case 'payment_intent.succeeded':
-                    // console.log("payment method: ", event.data.object.payment_method)
                     // console.log("metadata: ", event.data.object.metadata)
-                    const orderCreatedConfirmation = await pushOrder(cartWrapperRepository, apiClient, cartWrapper, {
-                        //@ts-ignore
-                        provider: 'stripe',
-                        stripe: {
-                            paymentIntentId: event.data.object.id,
-                            paymentMethod: event.data.object.payment_method,
-                            stripe: `eventId:${event.id}`,
-                            // metadata: event.data.object.charges.data[0].receipt_url,
-                            // metadata: event.data.object.metadata,
-                        },
-                    });
-                    return orderCreatedConfirmation;
+                    try {
+                        const orderCreatedConfirmation = await pushOrder(cartWrapperRepository, apiClient, cartWrapper, {
+                            //@ts-ignore
+                            provider: 'stripe',
+                            stripe: {
+                                paymentIntentId: event.data.object.id,
+                                paymentMethod: event.data.object.payment_method,
+                                stripe: `eventId:${event.id}`,
+                                // metadata: event.data.object.metadata,
+                            },
+                        });
+
+                        return orderCreatedConfirmation;
+                    }
+                    catch(e: any) {
+                        console.log("error: ", e);
+                    }
             }
         },
     });

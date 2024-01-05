@@ -56,7 +56,7 @@ export const getStoreFront = async (hostname: string) => {
         theme: `${process.env.STOREFRONT_THEME}`,
         configuration: {
           CRYSTALLIZE_ACCESS_TOKEN_ID: `${process.env.CRYSTALLIZE_ACCESS_TOKEN_ID}`,
-          CRYSTALLIZE_ACCESS_TOKEN_SECRET: `${process.env.CRYSTALLIZE_ACCESS_TOKEN_ID}`,
+          CRYSTALLIZE_ACCESS_TOKEN_SECRET: `${process.env.CRYSTALLIZE_ACCESS_TOKEN_SECRET}`,
         },
       });
     }
