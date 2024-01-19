@@ -31,14 +31,14 @@ export const Stripe: React.FC = () => {
         (async () => {
             if (!isEmpty()) {
                 // before anything else we place the cart
-                try {
-                    await ServiceAPI({ language: state.language, serviceApiUrl: state.serviceApiUrl }).placeCart(
-                        cart,
-                        customer,
-                    );
-                } catch (exception) {
-                    console.log(exception);
-                }
+                // try {
+                //     await ServiceAPI({ language: state.language, serviceApiUrl: state.serviceApiUrl }).placeCart(
+                //         cart,
+                //         customer,
+                //     );
+                // } catch (exception) {
+                //     console.log(exception);
+                // }
 
                 const data = await ServiceAPI({
                     language: state.language,
@@ -62,7 +62,7 @@ export const Stripe: React.FC = () => {
 
 const StripCheckoutForm: React.FC = () => {
     const { cart, empty } = useLocalCart();
-    const { path } = useAppContext();
+    const { path, state: contextState } = useAppContext();
     const stripe = useStripe();
     const elements = useElements();
     const navigate = useNavigate();
@@ -89,6 +89,15 @@ const StripCheckoutForm: React.FC = () => {
             ...state,
             processing: true,
         });
+
+        try {
+            await ServiceAPI({ language: contextState.language, serviceApiUrl: contextState.serviceApiUrl }).placeCart(
+                cart,
+                customer,
+            );
+        } catch (exception) {
+            console.log(exception);
+        }
 
         const payload = await stripe.confirmPayment({
             elements,
@@ -120,15 +129,24 @@ const StripCheckoutForm: React.FC = () => {
     const onAddressElementChange = (event: any) => {
         if (event.complete) {
             const address = event.value.address;
+            let streetAddress = address.line1;
+            streetAddress += address.line2 ? ` ${address.line2}` : "";
+            console.log(address);
+            console.log(streetAddress);
 
-            var fullName = event.value.name.trim();
-            var nameArray = fullName.split(' ');
+            const fullName = event.value.name.trim();
+            const nameArray = fullName.split(' ');
 
             writeStorage('customer', {
                 ...customer,
                 firstname: nameArray[0],
                 lastname: nameArray[1],
+
                 // address stuff here
+                streetAddress: streetAddress,
+                country: address.country,
+                city: address.city,
+                zipCode: address.postal_code
             });
         }
     }

@@ -22,12 +22,14 @@ export const HydratedCart: React.FC = () => {
   if (isEmpty()) {
     return (
       <ClientOnly>
-        <div className="flex justify-center items-center">
+        <div className="min-h-[80vh] flex justify-center items-center">
           <div>
             <h1 className="font-bold text-2xl">Cart is empty</h1>
             <br />
             <Link to={path("/shop/backpacks")}>
-              Shop
+              <button className="w-full bg-transparent hover:bg-gray-900 text-gray-900 font-semibold hover:text-gray-100 py-2 px-4 border border-gray-900 hover:border-transparent rounded-full">
+                Shop
+              </button>
             </Link>
           </div>
         </div>

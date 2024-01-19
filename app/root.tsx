@@ -100,7 +100,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <>
       <Header navigation={navigation[0].children} />
-      <div className="mt-8">{children}</div>
+      <div className="mt-8 flex justify-center">{children}</div>
       <Footer navigation={navigation} />
     </>
   );

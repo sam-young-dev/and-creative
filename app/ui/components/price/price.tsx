@@ -1,6 +1,7 @@
 import { CartItem } from "@crystallize/node-service-api-request-handlers";
 import { Price as CrystallizePrice } from '../../lib/pricing/pricing-component';
 import { ProductVariant } from "@crystallize/js-api-client";
+import { useAppContext } from "~/ui/app-context/provider";
 
 // export const Price: React.FC<{ variant: ProductVariant; size?: string }> = ({ variant, size = 'medium' }) => {
 //   // const { state } = useAppContext();
@@ -26,31 +27,26 @@ export const CartItemPrice: React.FC<{
   size?: string;
 }> = ({ item, saving, size = 'small' }) => {
   // const mapper = DataMapper();
-  // const { state, _t } = useAppContext();
-  const state = {
-    currency: {
-      code: 'USD'
-    }
-  }
+  const { state } = useAppContext();
 
   return (
-      <>
-          {/* <Price variant={mapper.API.Object.APIProductVariantToProductVariant(item.variant)} size={size} /> */}
-          <CrystallizePrice currencyCode={state.currency.code}>{item.price.gross}</CrystallizePrice>
-          <div>
-              Total:{' '}
-              <CrystallizePrice currencyCode={state.currency.code}>{item.price.gross}</CrystallizePrice>
-              {saving && (
-                  <>
-                      <del className="text-red mx-2">
-                          <CrystallizePrice currencyCode={state.currency.code}>
-                              {item.price.net + saving.amount}
-                          </CrystallizePrice>
-                      </del>
-                      <small>({saving.quantity} for free!)</small>
-                  </>
-              )}
-          </div>
-      </>
+    <>
+      {/* <Price variant={mapper.API.Object.APIProductVariantToProductVariant(item.variant)} size={size} /> */}
+      <CrystallizePrice currencyCode={state.currency.code}>{item.price.gross}</CrystallizePrice>
+      <div>
+        Total:{' '}
+        <CrystallizePrice currencyCode={state.currency.code}>{item.price.gross}</CrystallizePrice>
+        {saving && (
+          <>
+            <del className="text-red mx-2">
+              <CrystallizePrice currencyCode={state.currency.code}>
+                {item.price.net + saving.amount}
+              </CrystallizePrice>
+            </del>
+            <small>({saving.quantity} for free!)</small>
+          </>
+        )}
+      </div>
+    </>
   );
 };

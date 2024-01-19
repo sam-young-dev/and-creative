@@ -1,12 +1,17 @@
+'use client';
 import { useState } from "react";
 import { useLocation } from "@remix-run/react";
 import { ContentTransformer } from "@crystallize/reactjs-components";
 import { Image } from "@crystallize/reactjs-components";
 import { Price as CrystallizePrice } from "~/ui/lib/pricing/pricing-component";
 import { useLocalCart } from "../hooks/useLocalCart";
+import { useAppContext } from "../app-context/provider";
+import Link from "~/bridge/ui/Link";
+import { Carousel } from "../components/slider/slider";
 
 export default ({ data }: { data: any }) => {
   const { product } = data;
+  const { dispatch: contextDispatch } = useAppContext();
   const location = useLocation();
   const primaryVariant =
     product.variants.find((variant: any) => variant.sku === location.hash.slice(1)) ??
@@ -55,16 +60,28 @@ export default ({ data }: { data: any }) => {
       sku: selectedVariant.sku,
       price: selectedVariant.usdPrice.price
     }
+
+    const cartItem = {
+      ...selectedVariant,
+      price: {
+        gross: selectedVariant.usdPrice.price
+      }
+    }
+    contextDispatch.addItemsToCart([cartItem]);
     add(item);
   }
 
   return (
-    <div className="min-h-[100vh] switcher">
-      <div className="mb-4 flex items-center">
-        <Image key={selectedVariant.images[0].url} {...selectedVariant.images[0]} sizes="(max-width: 500px) 300px, 700px" className="w-full" />
-        {/* <ProductVariant variant={selectedVariant} /> */}
-        {/* {product.variants?.map((variant: any) => <ProductVariant key={variant.sku} variant={variant} />)} */}
+    <div className="min-h-[100vh] switcher mx-4 md:mx-6 lg:mx-auto md:container">
+
+      <div className="lg:mr-10">
+        <Carousel images={selectedVariant.images} />
       </div>
+
+      {/* <div className="mb-4 flex items-center"> */}
+      {/* <Image key={selectedVariant.images[0].url} {...selectedVariant.images[0]} sizes="(max-width: 500px) 300px, 700px" className="w-full" /> */}
+      {/* <ProductVariant variant={selectedVariant} /> */}
+      {/* {product.variants?.map((variant: any) => <ProductVariant key={variant.sku} variant={variant} />)} */}
 
       <div className="repel flow" data-repel-variant="vertical">
         <h3 className="sr-only">Reviews</h3>
@@ -101,8 +118,8 @@ export default ({ data }: { data: any }) => {
         <ContentTransformer json={product.summary?.content?.json} />
         <hr />
 
-        <form className="flow">
-          <h3 className="text-sm font-medium text-gray-900">Color</h3>
+        <div className="flow">
+          {attributes?.color?.length > 0 && <h3 className="text-sm font-medium text-gray-900">Color</h3>}
 
           <fieldset className="mt-4" onChange={(e) => onColorChange(e)}>
             <legend className="sr-only">Pack color</legend>
@@ -132,7 +149,7 @@ export default ({ data }: { data: any }) => {
           <button onClick={() => addToCart()} className="w-full bg-orange-500 hover:bg-orange-400 text-white font-bold py-2 px-4 rounded-full">
             ADD TO CART
           </button>
-        </form>
+        </div>
       </div>
     </div>
   )
