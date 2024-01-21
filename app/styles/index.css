@@ -1,9 +1,10 @@
+@import url('pure-react-carousel/dist/react-carousel.es.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer components {
-
   .flow>*+* {
     margin-block-start: var(--flow-space, 1em)
   }
@@ -29,7 +30,7 @@
 
   .switcher>* {
     flex-grow: 1;
-    flex-basis: calc((var(--switcher-target-container-width, 40rem) - 100%) * 999);
+    flex-basis: calc((var(--switcher-target-container-width, 50rem) - 100%) * 999);
   }
 
   .repel {

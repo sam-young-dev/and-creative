@@ -13,7 +13,7 @@ type VariantItemProps = {
 export function VariantItem({ item, isImmutable, addToCart, removeFromCart }: VariantItemProps) {
   return (
     <div
-      className="flex justify-between bg-gray-100 py-5 pr-10 pl-5 items-center rounded-lg"
+      className="flex justify-between bg-gray-100 py-5 pr-5 md:pr-10 pl-5 items-center rounded-lg"
     >
       <div className="flex cart-item gap-3 items-center">
         <Image

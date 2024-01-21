@@ -1,5 +1,5 @@
 import { LoaderFunction, redirect } from "@remix-run/node";
 
 export const loader: LoaderFunction = async () => {
-  return redirect('/' + 'en', 301);
+  return redirect('/' + 'en/', 301);
 };

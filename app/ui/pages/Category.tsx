@@ -14,7 +14,7 @@ export default ({ data }: { data: any }) => {
             <Card
               key={product.path}
               name={product.name}
-              variant={product?.defaultVariant}
+              price={product?.defaultVariant?.usdPrice.price}
               path={path(product.path)}
               image={product?.defaultVariant.firstImage || ""}
               imageSizes="300px"
