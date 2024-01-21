@@ -14,7 +14,7 @@ export default () => {
     <div className="min-h-[100vh] container py-3 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="flex gap-20 lg:flex-row flex-col">
         <CheckoutCart />
-        <div className="rounded lg:px-10 lg:w-3/5 w-full px-3 lg:pr-0">
+        <div className="rounded lg:px-10 lg:w-3/5 w-full lg:pl-3">
           <ClientOnly>
               <Stripe />
             {/* <>

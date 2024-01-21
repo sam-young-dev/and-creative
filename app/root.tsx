@@ -1,8 +1,8 @@
-import { 
-  json, 
-  type LinksFunction, 
-  type LoaderFunction, 
-  type MetaFunction 
+import {
+  json,
+  type LinksFunction,
+  type LoaderFunction,
+  type MetaFunction
 } from "@remix-run/node";
 import {
   Links,
@@ -12,6 +12,7 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useRouteError,
 } from "@remix-run/react";
 import { createClient, createNavigationFetcher } from "@crystallize/js-api-client";
 import { Header } from "~/ui/components/layout/header";
@@ -23,6 +24,8 @@ import { buildStoreFrontConfiguration, getStoreFront } from "./use-cases/storefr
 import { buildLanguageMarketAwareLink } from "./use-cases/LanguageAndMarket";
 import { TenantConfiguration } from "./use-cases/contracts/TenantConfiguration";
 import { CrystallizeAPI } from "./use-cases/crystallize/read";
+import { Tree } from "./use-cases/contracts/Tree";
+import { ErrorComponent } from "./ui/components/error";
 
 export const links: LinksFunction = () => {
   return [
@@ -39,6 +42,20 @@ export const meta: MetaFunction = () => [{
   viewport: "width=device-width,initial-scale=1",
 }];
 
+const recursiveMap = (level: any, defaultType: string): Tree => {
+  return {
+    id: level.id,
+    name: level.name,
+    path: level.path,
+    type: level.__typename ?? defaultType,
+    children: level.children?.map((child: any) => recursiveMap(child, defaultType)) ?? [],
+  };
+};
+
+const getFolders = (navigation: any) => {
+  return navigation.tree.children.map((tree: any) => recursiveMap(tree, 'folder'));
+}
+
 export const loader: LoaderFunction = async ({ request }) => {
   const requestContext = getContext(request);
   const { shared, secret } = await getStoreFront(requestContext.host);
@@ -53,20 +70,23 @@ export const loader: LoaderFunction = async ({ request }) => {
   //TESTMODE trick: here we use the real host, not the getContext that check SUPERFAST
   const serviceApiUrl = `http${requestContext.isSecure ? 's' : ''}://${request.headers.get('Host')!}${apiPath}`;
   const storeFrontConfiguration = buildStoreFrontConfiguration(
-      requestContext.locale,
-      serviceApiUrl,
-      shared.config,
-      tenantConfig,
+    requestContext.locale,
+    serviceApiUrl,
+    shared.config,
+    tenantConfig,
   );
-  
+
   const CrystallizeClient = createClient({
     tenantIdentifier: secret.config.tenantIdentifier,
   });
 
-  const fetch = createNavigationFetcher(CrystallizeClient).byFolders;
-  const navigation = await fetch('/', 'en', 3);
-  return json({ 
-    navigation: navigation.tree.children,
+  const fetchNavigation = createNavigationFetcher(CrystallizeClient).byFolders;
+  const navigationRoot = await fetchNavigation('/', requestContext.language, 3);
+  const shopFolder = getFolders(navigationRoot);
+  const navigation = shopFolder[0].children;
+
+  return json({
+    navigation: navigation,
     storeFrontConfiguration
   });
 };
@@ -99,8 +119,8 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
   return (
     <>
-      <Header navigation={navigation[0].children} />
-      <div className="mt-8 flex justify-center">{children}</div>
+      <Header navigation={navigation} />
+      <div className="mt-14 flex justify-center">{children}</div>
       <Footer navigation={navigation} />
     </>
   );
@@ -115,3 +135,21 @@ export default () => {
     </Document>
   );
 };
+
+export function ErrorBoundary() {
+  const error: any = useRouteError();
+  console.error(error);
+  return (
+    <html>
+      <head>
+        <title>Oh no!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body>
+        <ErrorComponent text={error.message} code={500} />
+        <Scripts />
+      </body>
+    </html>
+  );
+}

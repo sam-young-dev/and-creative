@@ -70,7 +70,7 @@ export const HydratedCart: React.FC = () => {
         </div>
         <div className="flex justify-between gap-5">
           {/* <VoucherForm /> */}
-          <div>Voucher form</div>
+          <div></div>
           <div>
             {total && (
               <div className="flex flex-col gap-2 border-b-2 border-grey4 py-4 items-end">
@@ -133,7 +133,7 @@ export const OptimisticHydratedCart: React.FC = () => {
         const item = cart.items[sku as keyof typeof cart];
         total += item.quantity * item.price;
         return (
-          <div key={index} className="flex justify-between bg-gray-100 py-5 pr-10 pl-5 items-center rounded-lg">
+          <div key={index} className="flex justify-between bg-gray-100 py-5 pr-5 md:pr-10 pl-5 items-center rounded-lg">
             <div className="flex cart-item gap-3 items-center">
               <Image />
               <div className="flex flex-col">
