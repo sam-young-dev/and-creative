@@ -45,10 +45,10 @@ export default ({ isServerSideAuthenticated }: { isServerSideAuthenticated: bool
 
   return (
     <div className="container 2xl px-6 mx-auto w-full">
-      <h1 className="text-2xl font-semibold my-10">Your Orders</h1>
       <ClientOnly>
         {isAuthenticated && isServerSideAuthenticated ? (
           <>
+            <h1 className="text-2xl font-semibold my-10">Your Orders</h1>
             <div>
               {isLoading && <p>...loading</p>}
               {!isLoading && !orders && <p>No orders yet</p>}
