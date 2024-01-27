@@ -43,7 +43,7 @@ export default ({ cartId }: { cartId: string }) => {
   }, [cartId, tryCount]);
 
   return (
-    <div className="items-center justify-center flex max-w-[500px] mx-auto flex-row">
+    <div className="min-h-[100vh] items-center justify-center flex max-w-[500px] mx-auto flex-row">
       <div className="loader mr-3" />
       ...redirecting
     </div>

@@ -32,7 +32,7 @@ export default ({ id, cartId }: { id: string, cartId?: string }) => {
   }, [id, tryCount]);
 
   return (
-    <div className="container py-3 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[100vh] container py-3 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <ClientOnly>
         <div className="flow">
           {order && <p className="mb-3">Order Id: {order.id}</p>}
