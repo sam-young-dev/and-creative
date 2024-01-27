@@ -44,7 +44,7 @@ export default ({ isServerSideAuthenticated }: { isServerSideAuthenticated: bool
   }, []);
 
   return (
-    <div className="container 2xl px-6 mx-auto w-full">
+    <div className="min-h-[100vh] container 2xl px-6 mx-auto w-full">
       <ClientOnly>
         {isAuthenticated && isServerSideAuthenticated ? (
           <>
